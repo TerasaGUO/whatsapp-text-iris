@@ -22,12 +22,13 @@ PASS: ObjectScript REST, 5 signed texts, 3 distinct Graph replies, stopped produ
 
 ## Install in IRIS
 
-1. Use a dedicated interoperability-enabled IRIS or IRIS for Health namespace and a configured InterSystems Web Gateway. Mount the repository where IRIS can read it. Import the six source classes in the target namespace, replacing the directory if necessary.
+1. Use a dedicated interoperability-enabled namespace, a configured InterSystems Web Gateway and an instance where this project can own the global web application path `/wa-text`. With InterSystems Package Manager (IPM) 0.10.10, mount the repository at `/app` and load it from the IRIS terminal in the target namespace.
 
    ```objectscript
-   set sc=$system.OBJ.LoadDir("/app/src","ck",,1)
-   do $system.Status.DisplayError(sc)
+   zpm "load /app"
    ```
+
+   IPM compiles the six `WaText` classes and configures the REST application. If your configured IPM registry already contains this package, use `zpm "install whatsapp-text-iris"` in the same namespace. For a manual installation, import the classes with `do $system.OBJ.LoadDir("/app/src","ck",,1)` and create the application in step 3.
 
 2. Set these secrets and identifiers in the environment of the IRIS instance before startup. The webhook and operation workers must see the values.
 
@@ -38,7 +39,7 @@ PASS: ObjectScript REST, 5 signed texts, 3 distinct Graph replies, stopped produ
    | `WA_PHONE_ID` | Numeric business phone **ID**, used to filter notifications |
    | `WA_ACCESS_TOKEN` | WhatsApp access token permitted to send from this business number |
 
-3. In **System Administration → Security → Applications → Web Applications**, create a REST web application at `/wa-text` in the production namespace. Use the dispatch class `WaText.Webhook`, enable unauthenticated requests (Meta authenticates POSTs by signature), and disable static file serving. Grant the database permissions needed to run the classes and queue messages **on this web application**. The disposable test grants only `%DB_USER` on the application in the otherwise empty `USER` namespace. Select the application database role appropriate to your own namespace. The exact test registration is in `tests/webapp.script`.
+3. In **System Administration → Security → Applications → Web Applications**, check the IPM-created `/wa-text` application or create it for a manual install. Set the namespace to the production namespace, the dispatch class to `WaText.Webhook`, authentication to unauthenticated (Meta signs POSTs), and static file serving to disabled. IPM assigns the target namespace’s globals database role to requests on this application. For a manual install, assign that role under **Application Roles**. If your mappings use additional databases, check that the application can execute the classes and queue messages there.
 4. Route `/wa-text/webhook` through your Web Gateway and publish this path via HTTPS for real Meta callbacks. Pass the raw body and `X-Hub-Signature-256` unchanged. Set up access logs to omit query strings because subscription verification includes a private token. A reverse proxy can map an existing public `/webhook` to the internal `/wa-text/webhook`.
 5. Configure an outbound IRIS TLS client profile with a trusted CA bundle and server-certificate verification set to **Required**. In the Management Portal, open `WaText.Production` and select **WhatsApp Reply**. Set adapter **TLSConfig** to the profile, **PhoneId** to the same numeric ID as `WA_PHONE_ID`, and **GraphVersion** to a version supported by your Meta app. Set operation **ReplyText** to customize the acknowledgement, apply the configuration and start the production.
 6. In Meta's WhatsApp settings, enter your public callback URL and the same verification token. Subscribe to the WhatsApp Business Account's `messages` field. Check the app's subscription to your account and authorize the recipient for your test number.

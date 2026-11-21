@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+  <Document name="whatsapp-text-iris.ZPM">
+    <Module>
+      <Name>whatsapp-text-iris</Name>
+      <Version>0.1.0</Version>
+      <Packaging>module</Packaging>
+      <Description>Receive signed WhatsApp text callbacks and queue replies through an IRIS interoperability production.</Description>
+      <SourcesRoot>src</SourcesRoot>
+      <Resource Name="WaText.PKG"/>
+      <WebApplication Name="/wa-text" DispatchClass="WaText.Webhook" AutheEnabled="64" Enabled="1" ServeFiles="0" MatchRoles=":${globalsDbRole}"/>
+    </Module>
+  </Document>
+</Export>
