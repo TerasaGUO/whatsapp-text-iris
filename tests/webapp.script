@@ -1,0 +1,3 @@
+set props("NameSpace")="USER",props("DispatchClass")="WaText.Webhook",props("AutheEnabled")=64,props("Enabled")=1,props("ServeFiles")=0,props("MatchRoles")=":%DB_USER"
+set sc=##class(Security.Applications).Create("/wa-text",.props) if $system.Status.IsError(sc) do $system.Status.DisplayError(sc) halt 1
+halt

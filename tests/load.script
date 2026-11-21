@@ -1,0 +1,4 @@
+set sc=$system.OBJ.LoadDir("/app/src","ck",,1) if $system.Status.IsError(sc) do $system.Status.DisplayError(sc) halt 1
+set sc=$system.OBJ.LoadDir("/app/tests/iris","ck",,1) if $system.Status.IsError(sc) do $system.Status.DisplayError(sc) halt 1
+set sc=##class(Ens.Director).StartProduction("WaTextCheck.Production") if $system.Status.IsError(sc) do $system.Status.DisplayError(sc) halt 1
+halt
