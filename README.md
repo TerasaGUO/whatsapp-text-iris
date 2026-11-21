@@ -28,7 +28,7 @@ PASS: ObjectScript REST, 5 signed texts, 3 distinct Graph replies, stopped produ
    zpm "load /app"
    ```
 
-   IPM compiles the six `WaText` classes and configures the REST application. If your configured IPM registry already contains this package, use `zpm "install whatsapp-text-iris"` in the same namespace. For a manual installation, import the classes with `do $system.OBJ.LoadDir("/app/src","ck",,1)` and create the application in step 3.
+   IPM compiles the six `WaText` classes and configures the REST application. If your configured IPM registry already contains this package, use `zpm "install whatsapp-text-iris 1.0.0"` in the same namespace. For a manual installation, import the classes with `do $system.OBJ.LoadDir("/app/src","ck",,1)` and create the application in step 3.
 
 2. Set these secrets and identifiers in the environment of the IRIS instance before startup. The webhook and operation workers must see the values.
 

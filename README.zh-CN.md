@@ -28,7 +28,7 @@ PASS: ObjectScript REST, 5 signed texts, 3 distinct Graph replies, stopped produ
    zpm "load /app"
    ```
 
-   IPM 将编译六个 `WaText` 类并配置 REST 应用。若所配置的 IPM 仓库已收录此包，也可在同一命名空间执行 `zpm "install whatsapp-text-iris"`。如需手动安装，可执行 `do $system.OBJ.LoadDir("/app/src","ck",,1)` 导入源代码类，再按照第 3 步创建 Web 应用。
+   IPM 将编译六个 `WaText` 类并配置 REST 应用。若所配置的 IPM 仓库已收录此包，也可在同一命名空间执行 `zpm "install whatsapp-text-iris 1.0.0"`。如需手动安装，可执行 `do $system.OBJ.LoadDir("/app/src","ck",,1)` 导入源代码类，再按照第 3 步创建 Web 应用。
 
 2. 启动 IRIS 实例前，在实例环境中配置以下密钥和标识，确保 Webhook 与业务操作的工作进程均可读取。
 
